@@ -345,6 +345,18 @@ public class CountryPicker implements BottomSheetInteractionListener, LifecycleO
     theme = builder.theme;
     putDeviceLocaleToFirst = builder.putDeviceLocaleToFirst;
     countries = new ArrayList<>(Arrays.asList(COUNTRIES));
+
+    if (builder.isoCodesToInclude == null || builder.isoCodesToInclude.isEmpty()) {
+      countries = new ArrayList<>(Arrays.asList(COUNTRIES));
+    } else {
+      List<Country> filtered = new ArrayList<>(builder.isoCodesToInclude.size());
+      for (Country country: COUNTRIES) {
+        if (builder.isoCodesToInclude.contains(country.getCode())) {
+          filtered.add(country);
+        }
+      }
+      countries = filtered;
+    }
     sortCountries(countries);
 
     if (putDeviceLocaleToFirst) {
@@ -603,6 +615,7 @@ public class CountryPicker implements BottomSheetInteractionListener, LifecycleO
     private int style;
     private int theme = THEME_NEW;
     private boolean putDeviceLocaleToFirst = false;
+    private List<String> isoCodesToInclude;
 
     public Builder with(@NonNull Context context) {
       this.context = context;
@@ -636,6 +649,11 @@ public class CountryPicker implements BottomSheetInteractionListener, LifecycleO
 
     public Builder setDeviceLocaleToFirst(@NonNull boolean  putDeviceLocaleToFirst) {
       this.putDeviceLocaleToFirst = putDeviceLocaleToFirst;
+      return this;
+    }
+
+    public Builder isoCodesToInclude(@NonNull List<String> isoCodesToInclude) {
+      this.isoCodesToInclude = isoCodesToInclude;
       return this;
     }
 
