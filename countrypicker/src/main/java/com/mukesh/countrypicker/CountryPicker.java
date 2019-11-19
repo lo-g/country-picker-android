@@ -582,26 +582,28 @@ public class CountryPicker implements BottomSheetInteractionListener, LifecycleO
   }
 
   public Country getCountryByName(@NonNull String countryName) {
-    Collections.sort(countries, new NameComparator());
+    List<Country> temp = new ArrayList<>(countries);
+    Collections.sort(temp, new NameComparator());
     Country country = new Country();
     country.setName(countryName);
-    int i = Collections.binarySearch(countries, country, new NameComparator());
+    int i = Collections.binarySearch(temp, country, new NameComparator());
     if (i < 0) {
       return null;
     } else {
-      return countries.get(i);
+      return temp.get(i);
     }
   }
 
   public Country getCountryByISO(@NonNull String countryIsoCode) {
-    Collections.sort(countries, new ISOCodeComparator());
+    List<Country> temp = new ArrayList<>(countries);
+    Collections.sort(temp, new ISOCodeComparator());
     Country country = new Country();
     country.setCode(countryIsoCode);
-    int i = Collections.binarySearch(countries, country, new ISOCodeComparator());
+    int i = Collections.binarySearch(temp, country, new ISOCodeComparator());
     if (i < 0) {
       return null;
     } else {
-      return countries.get(i);
+      return temp.get(i);
     }
   }
   // endregion
